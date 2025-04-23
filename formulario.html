@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulário de Solicitação</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Solicitação de Serviço</h1>
+  <form id="serviceForm">
+    <label for="name">Nome:</label>
+    <input type="text" id="name" required>
+
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" required>
+
+    <label for="description">Descrição do problema:</label>
+    <textarea id="description" rows="5" required></textarea>
+
+    <button type="submit">Enviar</button>
+    <p class="error" id="errorMsg"></p>
+  </form>
+
+  <script>
+    // Funções assertivas
+    function assert(value, message) {
+      if (value) return;
+      throw new Error("Falha: " + (message || "condição inválida"));
+    }
+
+    function assertInstanceof(value, type, message) {
+      if (value instanceof type) return;
+      throw new Error(message || `Valor ${value} não é do tipo ${type.name || typeof type}`);
+    }
+
+    function assertNotReached(message = "Código inatingível executado") {
+      assert(false, message);
+    }
+
+    // Lógica de validação
+    document.getElementById('serviceForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Evita envio automático
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const description = document.getElementById('description').value.trim();
+      const errorMsg = document.getElementById('errorMsg');
+
+      try {
+        assert(name.length > 0, "O nome é obrigatório.");
+        assert(email.includes("@"), "E-mail inválido.");
+        assert(description.length >= 10, "Descrição muito curta.");
+
+        errorMsg.textContent = "";
+        alert("Formulário enviado com sucesso!");
+        // Aqui você pode enviar os dados para um backend ou salvar em banco
+      } catch (err) {
+        errorMsg.textContent = err.message;
+      }
+    });
+  </script>
+</body>
+</html>
